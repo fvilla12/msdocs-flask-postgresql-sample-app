@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Análisis de Imágenes</title>
+</head>
+<body>
+    <h1>Registros de Análisis</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Archivo</th>
+                <th>Usuario</th>
+                <th>Colores</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in registros %}
+            <tr>
+                <td>{{ r.filename }}</td>
+                <td>{{ r.username }}</td>
+                <td>{{ r.colors }}</td>
+                <td>{{ r.timestamp.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

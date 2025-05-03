@@ -1,8 +1,20 @@
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import validates
+from sqlalchemy.dialects.postgresql import JSON
 
 from app import db
 
+# CLASE
+class ImagenesScala(db.Model):
+    __tablename__ = 'imagenes_scala'
+    id = Column(Integer, primary_key=True)
+    filename = Column(String(100))
+    username = Column(String(50))
+    colors = Column(String(1000))  # O usar JSON si tu base lo permite
+    timestamp = Column(DateTime)
+
+    def __str__(self):
+        return f"{self.filename} - {self.username} - {self.timestamp}"
 
 class Restaurant(db.Model):
     __tablename__ = 'restaurant'

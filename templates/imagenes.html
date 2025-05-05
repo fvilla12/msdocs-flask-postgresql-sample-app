@@ -48,7 +48,7 @@
                 <td>
                     {% if r.colors.startswith('{') %}
                         <ul>
-                        {% for k, v in r.colors | from_json.items() %}
+                        {% for k, v in r.colors.items() %}
                             <li>{{ k }}: {{ v }}</li>
                         {% endfor %}
                         </ul>

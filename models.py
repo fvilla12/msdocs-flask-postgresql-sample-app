@@ -10,7 +10,7 @@ class ImagenesScala(db.Model):
     id = Column(Integer, primary_key=True)
     filename = Column(String(100))
     username = Column(String(50))
-    colors = Column(String(1000))  # O usar JSON si tu base lo permite
+    colors = Column(JSON)
     timestamp = Column(DateTime)
 
     def __str__(self):

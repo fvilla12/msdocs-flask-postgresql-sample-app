@@ -1,11 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Análisis de Imágenes</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        h1 {
+            color: #333;
+        }
+        ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Registros de Análisis</h1>
-    <table border="1">
+    <h1>Registros de Análisis ({{ records | length }})</h1>
+    <table>
         <thead>
             <tr>
                 <th>Archivo</th>
@@ -15,11 +41,21 @@
             </tr>
         </thead>
         <tbody>
-        {% for r in registros %}
+        {% for r in records %}
             <tr>
                 <td>{{ r.filename }}</td>
                 <td>{{ r.username }}</td>
-                <td>{{ r.colors }}</td>
+                <td>
+                    {% if r.colors.startswith('{') %}
+                        <ul>
+                        {% for k, v in r.colors | from_json.items() %}
+                            <li>{{ k }}: {{ v }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        {{ r.colors }}
+                    {% endif %}
+                </td>
                 <td>{{ r.timestamp.strftime("%Y-%m-%d %H:%M:%S") }}</td>
             </tr>
         {% endfor %}

@@ -36,9 +36,8 @@ from models import Restaurant, Review, ImagenesScala
 
 @app.route('/', methods=['GET'])
 def index():
-    print('Request for index page received')
-    restaurants = Restaurant.query.all()
-    return render_template('index.html', restaurants=restaurants)
+    records = ImagenesScala.query.order_by(ImagenesScala.timestamp.desc()).all()
+    return render_template('imagenes.html', records=records)
 
 @app.route('/<int:id>', methods=['GET'])
 def details(id):
@@ -51,13 +50,6 @@ def create_restaurant():
     print('Request for add restaurant page received')
     return render_template('create_restaurant.html')
 
-# MOSTRAR LOS REGISTRLOS
-@app.route('/analisis', methods=['GET'])
-def show_analysis():
-    records = ImagenesScala.query.order_by(ImagenesScala.timestamp.desc()).all()
-    return render_template('imagenes.html', records=records)
-
-
 # ADD RESTAURANT
 @app.route('/add', methods=['POST'])
 @csrf.exempt
@@ -67,7 +59,6 @@ def add_restaurant():
         street_address = request.values.get('street_address')
         description = request.values.get('description')
     except (KeyError):
-        # Redisplay the question voting form.
         return render_template('add_restaurant.html', {
             'error_message': "You must include a restaurant name, address, and description",
         })
@@ -80,6 +71,7 @@ def add_restaurant():
         db.session.commit()
 
         return redirect(url_for('details', id=restaurant.id))
+
 # ADD REVIEW
 @app.route('/review/<int:id>', methods=['POST'])
 @csrf.exempt
@@ -89,7 +81,6 @@ def add_review(id):
         rating = request.values.get('rating')
         review_text = request.values.get('review_text')
     except (KeyError):
-        #Redisplay the question voting form.
         return render_template('add_review.html', {
             'error_message': "Error adding review",
         })
@@ -127,7 +118,7 @@ def upload_data():
         )
         db.session.add(analysis)
         db.session.commit()
-    # Aquí podrías guardar estos datos en una tabla nueva, por ejemplo ImageAnalysis
+
     print("Recibido:", filename, colors, username, timestamp)
     return jsonify({"message": "Datos recibidos correctamente"}), 200
 

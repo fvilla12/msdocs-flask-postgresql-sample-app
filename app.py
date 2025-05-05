@@ -34,7 +34,7 @@ migrate = Migrate(app, db)
 # The import must be done after db initialization due to circular import issue
 from models import Restaurant, Review, ImagenesScala
 
-@app.route('/upload', methods=['GET'])
+@app.route('/', methods=['GET'])
 def index():
     records = ImagenesScala.query.order_by(ImagenesScala.timestamp.desc()).all()
     return render_template('imagenes.html', records=records)

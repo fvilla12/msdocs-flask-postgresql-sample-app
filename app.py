@@ -39,6 +39,31 @@ def index():
     records = ImagenesScala.query.order_by(ImagenesScala.timestamp.desc()).all()
     return render_template('imagenes.html', records=records)
 
+@app.route('/upload', methods=['POST'])
+@csrf.exempt
+def upload_data():
+    data = request.get_json()
+
+    try:
+        filename = data['filename']
+        colors = data['colors']  # Diccionario con nombre de color -> píxeles
+        username = data['username']
+        timestamp = data['timestamp']
+    except KeyError as e:
+        return jsonify({"error": f"Missing field: {str(e)}"}), 400
+    else:
+        analysis = ImagenesScala(
+            filename=filename,
+            username=username,
+            colors=str(colors),
+            timestamp=datetime.fromisoformat(timestamp)
+        )
+        db.session.add(analysis)
+        db.session.commit()
+
+    print("Recibido:", filename, colors, username, timestamp)
+    return jsonify({"message": "Datos recibidos correctamente"}), 200
+
 @app.route('/<int:id>', methods=['GET'])
 def details(id):
     restaurant = Restaurant.query.where(Restaurant.id == id).first()
@@ -95,32 +120,6 @@ def add_review(id):
         db.session.commit()
 
     return redirect(url_for('details', id=id))
-
-# SUBIR IMAGEN
-@app.route('/upload', methods=['POST'])
-@csrf.exempt
-def upload_data():
-    data = request.get_json()
-
-    try:
-        filename = data['filename']
-        colors = data['colors']  # Diccionario con nombre de color -> píxeles
-        username = data['username']
-        timestamp = data['timestamp']
-    except KeyError as e:
-        return jsonify({"error": f"Missing field: {str(e)}"}), 400
-    else:
-        analysis = ImagenesScala(
-            filename=filename,
-            username=username,
-            colors=str(colors),
-            timestamp=datetime.fromisoformat(timestamp)
-        )
-        db.session.add(analysis)
-        db.session.commit()
-
-    print("Recibido:", filename, colors, username, timestamp)
-    return jsonify({"message": "Datos recibidos correctamente"}), 200
 
 @app.context_processor
 def utility_processor():

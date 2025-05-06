@@ -55,7 +55,7 @@ def upload_data():
         analysis = ImagenesScala(
             filename=filename,
             username=username,
-            colors=str(colors),
+            colors=colors,
             timestamp=datetime.fromisoformat(timestamp)
         )
         db.session.add(analysis)

@@ -46,11 +46,15 @@
                 <td>{{ r.filename }}</td>
                 <td>{{ r.username }}</td>
                 <td>
-                    <ul>
-                    {% for k, v in r.colors.items() %}
-                        <li>{{ k }}: {{ v }}</li>
-                    {% endfor %}
-                    </ul>
+                    {% if r.colors.items is defined %}
+                        <ul>
+                        {% for k, v in r.colors.items() %}
+                            <li>{{ k }}: {{ v }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        {{ r.colors }}
+                    {% endif %}
                 </td>
                 <td>{{ r.timestamp.strftime("%Y-%m-%d %H:%M:%S") }}</td>
             </tr>

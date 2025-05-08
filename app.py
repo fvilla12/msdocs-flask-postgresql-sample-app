@@ -36,12 +36,34 @@ from models import Restaurant, Review, ImagenesScala
 
 @app.route('/', methods=['GET'])
 def index():
+     """
+    Muestra la página principal con una tabla de registros de análisis de imágenes.
+
+    Recupera todos los registros de la base de datos `ImagenesScala`, ordenados por
+    fecha de forma descendente, y los pasa a la plantilla `imagenes.html` para su visualización.
+
+    Returns:
+        str: HTML renderizado de la plantilla con los registros.
+    """
     records = ImagenesScala.query.order_by(ImagenesScala.timestamp.desc()).all()
     return render_template('imagenes.html', records=records)
 
 @app.route('/upload', methods=['POST'])
 @csrf.exempt
 def upload_data():
+    """
+    Recibe datos de análisis de imágenes desde una aplicación externa (como Scala)
+    y los guarda en la base de datos.
+
+    Espera una solicitud HTTP POST con un cuerpo JSON que contenga:
+        - filename (str): nombre del archivo analizado.
+        - colors (dict): diccionario con cantidad de píxeles por color.
+        - username (str): nombre de usuario que realizó el análisis.
+        - timestamp (str): marca temporal en formato ISO.
+
+    Returns:
+        Response: objeto JSON con mensaje de éxito o error, y código HTTP 200 o 400.
+    """
     data = request.get_json()
 
     try:

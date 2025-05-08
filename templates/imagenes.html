@@ -1,8 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Análisis de Imágenes</title>
+{% extends "base.html" %}
+
+{% block title %}Análisis de Imágenes{% endblock %}
+
+{% block head %}
+    {{ super() }}
     <style>
         body {
             font-family: sans-serif;
@@ -28,8 +29,9 @@
             padding-left: 20px;
         }
     </style>
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <h1>Registros de Análisis ({{ records | length }})</h1>
     <table>
         <thead>
@@ -61,5 +63,4 @@
         {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}

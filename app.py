@@ -36,7 +36,7 @@ from models import Restaurant, Review, ImagenesScala
 
 @app.route('/', methods=['GET'])
 def index():
-     """
+    """
     Muestra la página principal con una tabla de registros de análisis de imágenes.
 
     Recupera todos los registros de la base de datos `ImagenesScala`, ordenados por
@@ -75,10 +75,10 @@ def upload_data():
         return jsonify({"error": f"Missing field: {str(e)}"}), 400
     else:
         analysis = ImagenesScala(
-            filename=filename,
-            username=username,
-            colors=colors,
-            timestamp=datetime.fromisoformat(timestamp)
+        filename=filename,
+        username=username,
+        colors=colors,
+        timestamp=datetime.fromisoformat(timestamp)
         )
         db.session.add(analysis)
         db.session.commit()
